@@ -6,7 +6,7 @@
                 <resource id="Magento_Adminhtml::stores">
                     <resource id="Magento_Adminhtml::stores_settings">
                         <resource id="Magento_Adminhtml::config">
-                            <resource id="Craftyclicks_Clicktoaddress::main_config" title="Click to Address" />
+                            <resource id="Craftyclicks_Ukpostcodelookup::main_config" title="UK Postcode Lookup" />
                         </resource>
                     </resource>
                 </resource>

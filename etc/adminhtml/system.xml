@@ -5,9 +5,9 @@
 			<label>Crafty Clicks</label>
 		</tab>
 		<section id="cc_uk" translate="label" sortOrder="130" showInDefault="1">
-			<label>Click to Address</label>
+			<label>UK Postcode Lookup</label>
 			<tab>cc_setup</tab>
-			<resource>Craftyclicks_Clicktoaddress::main_config</resource>
+			<resource>Craftyclicks_Ukpostcodelookup::main_config</resource>
 			<group id="main_options" translate="label" type="text" sortOrder="10" showInDefault="1">
 				<label>Main Options</label>
 				<field id="frontend_enabled" translate="label" type="select" sortOrder="1" showInDefault="1">
@@ -44,7 +44,7 @@
 							</li>
 						</ul>
 					]]></comment>
-					<source_model>Craftyclicks\Clicktoaddress\Model\Source\Searchtype</source_model>
+					<source_model>Craftyclicks\Ukpostcodelookup\Model\Source\Searchtype</source_model>
 				</field>
 				<field id="searchbar_auto_search" translate="label" type="select" sortOrder="30" showInDefault="1">
 					<label>Auto-Search</label>

@@ -1,5 +1,5 @@
 <?php
-namespace Craftyclicks\Clicktoaddress\Helper;
+namespace Craftyclicks\Ukpostcodelookup\Helper;
 
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {

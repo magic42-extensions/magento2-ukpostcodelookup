@@ -1,25 +1,22 @@
 {
-    "name": "craftyclicks/module-clicktoaddress",
+    "name": "craftyclicks/module-ukpostcodelookup",
     "description": "Apply postcode lookup to Magento 2.",
     "require": {
-	 "php": "~5.5.0|~5.6.0",
-	 "magento/magento-composer-installer": "*"
+	 "php": "~5.5.0|~5.6.0|~7.0.0"
     },
     "type": "magento2-module",
-    "version": "0.2.0-beta",
-    "extra": {
-        "map": [
-            [
-                "*",
-                "Craftyclicks/Clicktoaddress"
-            ]
-        ]
-    },
+    "version": "1.0.0",
     "authors": [
         {
             "name": "Gabor Peter Suranyi",
             "homepage": "https://craftyclicks.co.uk/",
             "role": "Developer"
         }
-    ]
+    ],
+	"autoload": {
+        "files": [ "registration.php" ],
+        "psr-4": {
+          "Craftyclicks\\Ukpostcodelookup\\": ""
+        }
+    }
 }

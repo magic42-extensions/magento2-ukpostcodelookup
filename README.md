@@ -10,9 +10,9 @@ composer config repositories.craftyclicks git https://github.com/craftyclicks/ma
 & make sure that your your minimum-stability is alpha.
 Then, request composer to fetch the module:
 ```
-composer require craftyclicks/module-clicktoaddress
+composer require craftyclicks/module-ukpostcodelookup
 ```
-(or composer require craftyclicks/module-clicktoaddress:dev-branch for a specific branch)
+(or composer require craftyclicks/module-ukpostcodelookup:dev-branch for a specific branch)
 
 Then execute install script
 ```
@@ -21,7 +21,7 @@ php -f bin/magento setup:upgrade
 
 ###Manual Install
 
-- Create folder structure /app/code/Craftyclicks/Clicktoaddress/
+- Create folder structure /app/code/Craftyclicks/Ukpostcodelookup/
 - Download & copy the git contents to the folder
 - Run install script
 ```

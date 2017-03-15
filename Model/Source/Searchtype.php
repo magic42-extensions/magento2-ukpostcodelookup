@@ -1,6 +1,6 @@
 <?php
 
-namespace Craftyclicks\Clicktoaddress\Model\Source;
+namespace Craftyclicks\Ukpostcodelookup\Model\Source;
 
 class Searchtype implements \Magento\Framework\Data\OptionSourceInterface
 {
