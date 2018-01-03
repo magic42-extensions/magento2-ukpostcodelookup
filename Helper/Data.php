@@ -27,8 +27,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 	}
 	public function getFrontendCfg(){
 		$cfg = [];
-		$cfg['key'] = $this->_encryptor->decrypt(
-			$this->_escaper->escapeHtml(
+		$cfg['key'] = $this->_escaper->escapeHtml(
+			$this->_encryptor->decrypt(
 				$this->scopeConfig->getValue(
 					'cc_uk/main_options/frontend_accesstoken',
 					\Magento\Store\Model\ScopeInterface::SCOPE_STORE
@@ -109,8 +109,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 	}
 	public function getBackendCfg(){
 		$cfg = [];
-		$cfg['key'] = $this->_encryptor->decrypt(
-			$this->_escaper->escapeHtml(
+		$cfg['key'] = $this->_escaper->escapeHtml(
+			$this->_encryptor->decrypt(
 				$this->scopeConfig->getValue(
 					'cc_uk/main_options/backend_accesstoken',
 					\Magento\Store\Model\ScopeInterface::SCOPE_STORE
