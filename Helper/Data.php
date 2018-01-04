@@ -25,16 +25,34 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 		$this->_encryptor = $encryptor;
 		parent::__construct($context);
 	}
-	public function getFrontendCfg(){
-		$cfg = [];
-		$cfg['key'] = $this->_escaper->escapeHtml(
-			$this->_encryptor->decrypt(
-				$this->scopeConfig->getValue(
-					'cc_uk/main_options/frontend_accesstoken',
-					\Magento\Store\Model\ScopeInterface::SCOPE_STORE
-				)
+	private function getCfg($cfg_name){
+		return $this->_escaper->escapeHtml(
+			$this->scopeConfig->getValue(
+				'cc_uk/'.$cfg_name,
+				\Magento\Store\Model\ScopeInterface::SCOPE_STORE
 			)
 		);
+	}
+
+	public function getFrontendCfg(){
+		$cfg = [];
+
+		$token = $this->scopeConfig->getValue(
+			'cc_uk/main_options/frontend_accesstoken',
+			\Magento\Store\Model\ScopeInterface::SCOPE_STORE
+		);
+		try{
+			if(0 == preg_match("/^([a-zA-Z0-9]{5}-){3}[a-zA-Z0-9]{5}$/",$token)){
+				// not decrypted yet (php 7.0.X?)
+				$token = $this->_encryptor->decrypt($token);
+				$cfg['rdcrypt'] = true;
+			}
+		} catch (Exception $e) {
+			$cfg['rdcrypt'] = false;
+		}
+		$cfg['key'] = $this->_escaper->escapeHtml($token);
+
+
 		$cfg['enabled'] = $this->scopeConfig->isSetFlag(
 			'cc_uk/main_options/frontend_enabled',
 			\Magento\Store\Model\ScopeInterface::SCOPE_STORE
@@ -52,71 +70,38 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 			\Magento\Store\Model\ScopeInterface::SCOPE_STORE
 		);
 		// special search configs
-		$cfg['searchbar_type'] = $this->_escaper->escapeHtml(
-			$this->scopeConfig->getValue(
-				'cc_uk/gfx_options/searchbar_type',
-				\Magento\Store\Model\ScopeInterface::SCOPE_STORE
-			)
-		);
+		$cfg['searchbar_type'] = $this->getCfg('gfx_options/searchbar_type');
 
 		// errors
 		$cfg['error_msg'] = [];
-		$cfg['error_msg']["0001"] = $this->_escaper->escapeHtml(
-			$this->scopeConfig->getValue(
-				'cc_uk/txt_options/error_msg_1',
-				\Magento\Store\Model\ScopeInterface::SCOPE_STORE
-			)
-		);
-		$cfg['error_msg']["0002"] = $this->_escaper->escapeHtml(
-			$this->scopeConfig->getValue(
-				'cc_uk/txt_options/error_msg_2',
-				\Magento\Store\Model\ScopeInterface::SCOPE_STORE
-			)
-		);
-		$cfg['error_msg']["0003"] = $this->_escaper->escapeHtml(
-			$this->scopeConfig->getValue(
-				'cc_uk/txt_options/error_msg_3',
-				\Magento\Store\Model\ScopeInterface::SCOPE_STORE
-			)
-		);
-		$cfg['error_msg']["0004"] = $this->_escaper->escapeHtml(
-			$this->scopeConfig->getValue(
-				'cc_uk/txt_options/error_msg_4',
-				\Magento\Store\Model\ScopeInterface::SCOPE_STORE
-			)
-		);
+		$cfg['error_msg']["0001"] = $this->getCfg('txt_options/error_msg_1');
+		$cfg['error_msg']["0002"] = $this->getCfg('txt_options/error_msg_2');
+		$cfg['error_msg']["0003"] = $this->getCfg('txt_options/error_msg_3');
+		$cfg['error_msg']["0004"] = $this->getCfg('txt_options/error_msg_4');
 		$cfg['txt'] = [];
-		$cfg['txt']["search_label"] = $this->_escaper->escapeHtml(
-			$this->scopeConfig->getValue(
-				'cc_uk/txt_options/search_label',
-				\Magento\Store\Model\ScopeInterface::SCOPE_STORE
-			)
-		);
-		$cfg['txt']["search_placeholder"] = $this->_escaper->escapeHtml(
-			$this->scopeConfig->getValue(
-				'cc_uk/txt_options/search_placeholder',
-				\Magento\Store\Model\ScopeInterface::SCOPE_STORE
-			)
-		);
-		$cfg['txt']['button_text'] = $this->_escaper->escapeHtml(
-			$this->scopeConfig->getValue(
-				'cc_uk/gfx_options/button_text',
-				\Magento\Store\Model\ScopeInterface::SCOPE_STORE
-			)
-		);
+		$cfg['txt']["search_label"] = $this->getCfg('txt_options/search_label');
+		$cfg['txt']["search_placeholder"] = $this->getCfg('txt_options/search_placeholder');
+		$cfg['txt']['button_text'] = $this->getCfg('gfx_options/button_text');
 
 		return json_encode($cfg);
 	}
 	public function getBackendCfg(){
 		$cfg = [];
-		$cfg['key'] = $this->_escaper->escapeHtml(
-			$this->_encryptor->decrypt(
-				$this->scopeConfig->getValue(
-					'cc_uk/main_options/backend_accesstoken',
-					\Magento\Store\Model\ScopeInterface::SCOPE_STORE
-				)
-			)
+		$token = $this->scopeConfig->getValue(
+			'cc_uk/main_options/backend_accesstoken',
+			\Magento\Store\Model\ScopeInterface::SCOPE_STORE
 		);
+		try{
+			if(0 == preg_match("/^([a-zA-Z0-9]{5}-){3}[a-zA-Z0-9]{5}$/",$token)){
+				// not decrypted yet (php 7.0.X?)
+				$token = $this->_encryptor->decrypt($token);
+				$cfg['rdcrypt'] = true;
+			}
+		} catch (Exception $e) {
+			$cfg['rdcrypt'] = false;
+		}
+		$cfg['key'] = $this->_escaper->escapeHtml($token);
+
 		$cfg['enabled'] = $this->scopeConfig->isSetFlag(
 			'cc_uk/main_options/backend_enabled',
 			\Magento\Store\Model\ScopeInterface::SCOPE_STORE
@@ -130,56 +115,16 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 			\Magento\Store\Model\ScopeInterface::SCOPE_STORE
 		);
 
-		$cfg['searchbar_type'] = $this->_escaper->escapeHtml(
-			$this->scopeConfig->getValue(
-				'cc_uk/gfx_options/searchbar_type',
-				\Magento\Store\Model\ScopeInterface::SCOPE_STORE
-			)
-		);
+		$cfg['searchbar_type'] = $this->getCfg('gfx_options/searchbar_type');
 		$cfg['error_msg'] = [];
-		$cfg['error_msg']["0001"] = $this->_escaper->escapeHtml(
-			$this->scopeConfig->getValue(
-				'cc_uk/txt_options/error_msg_1',
-				\Magento\Store\Model\ScopeInterface::SCOPE_STORE
-			)
-		);
-		$cfg['error_msg']["0002"] = $this->_escaper->escapeHtml(
-			$this->scopeConfig->getValue(
-				'cc_uk/txt_options/error_msg_2',
-				\Magento\Store\Model\ScopeInterface::SCOPE_STORE
-			)
-		);
-		$cfg['error_msg']["0003"] = $this->_escaper->escapeHtml(
-			$this->scopeConfig->getValue(
-				'cc_uk/txt_options/error_msg_3',
-				\Magento\Store\Model\ScopeInterface::SCOPE_STORE
-			)
-		);
-		$cfg['error_msg']["0004"] = $this->_escaper->escapeHtml(
-			$this->scopeConfig->getValue(
-				'cc_uk/txt_options/error_msg_4',
-				\Magento\Store\Model\ScopeInterface::SCOPE_STORE
-			)
-		);
+		$cfg['error_msg']["0001"] = $this->getCfg('txt_options/error_msg_1');
+		$cfg['error_msg']["0002"] = $this->getCfg('txt_options/error_msg_2');
+		$cfg['error_msg']["0003"] = $this->getCfg('txt_options/error_msg_3');
+		$cfg['error_msg']["0004"] = $this->getCfg('txt_options/error_msg_4');
 		$cfg['txt'] = [];
-		$cfg['txt']["search_label"] = $this->_escaper->escapeHtml(
-			$this->scopeConfig->getValue(
-				'cc_uk/txt_options/search_label',
-				\Magento\Store\Model\ScopeInterface::SCOPE_STORE
-			)
-		);
-		$cfg['txt']["search_placeholder"] = $this->_escaper->escapeHtml(
-			$this->scopeConfig->getValue(
-				'cc_uk/txt_options/search_placeholder',
-				\Magento\Store\Model\ScopeInterface::SCOPE_STORE
-			)
-		);
-		$cfg['txt']["search_buttontext"] = $this->_escaper->escapeHtml(
-			$this->scopeConfig->getValue(
-				'cc_uk/txt_options/search_buttontext',
-				\Magento\Store\Model\ScopeInterface::SCOPE_STORE
-			)
-		);
+		$cfg['txt']["search_label"] = $this->getCfg('txt_options/search_label');
+		$cfg['txt']["search_placeholder"] = $this->getCfg('txt_options/search_placeholder');
+		$cfg['txt']["search_buttontext"] = $this->getCfg('txt_options/search_buttontext');
 		return json_encode($cfg);
 
 	}
