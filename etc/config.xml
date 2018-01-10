@@ -11,6 +11,8 @@
 			<main_options>
 				<frontend_enabled>0</frontend_enabled>
 				<backend_enabled>0</backend_enabled>
+				<frontend_accesstoken backend_model="Magento\Config\Model\Config\Backend\Encrypted">xxxxx-xxxxx-xxxxx-xxxxx</frontend_accesstoken>
+				<backend_accesstoken backend_model="Magento\Config\Model\Config\Backend\Encrypted">xxxxx-xxxxx-xxxxx-xxxxx</backend_accesstoken>
 			</main_options>
 			<gfx_options>
 				<searchbar_type>traditional</searchbar_type>

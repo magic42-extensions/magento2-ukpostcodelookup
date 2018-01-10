@@ -1,6 +1,6 @@
 
 var cc_activate_flags = [];
-function activate_cc_m2(){
+function activate_cc_m2_uk(){
 	if(crafty_cfg.enabled){
 		var cfg = {
 			id: "",
@@ -72,7 +72,7 @@ var cc_index = 0;
 requirejs(['jquery'], function( $ ) {
 	jQuery( document ).ready(function() {
 		if(crafty_cfg.enabled){
-			setInterval(activate_cc_m2,200);
+			setInterval(activate_cc_m2_uk,200);
 		}
 	});
 });
