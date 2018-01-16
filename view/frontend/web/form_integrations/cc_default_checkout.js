@@ -1,4 +1,4 @@
-function activate_cc_m2(){
+function activate_cc_m2_uk(){
 	if(crafty_cfg.enabled){
 		var cfg = {
 			id: "",
