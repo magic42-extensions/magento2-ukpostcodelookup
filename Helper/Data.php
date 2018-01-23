@@ -61,6 +61,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 			'cc_uk/gfx_options/hide_fields',
 			\Magento\Store\Model\ScopeInterface::SCOPE_STORE
 		);
+		/*
 		$cfg['auto_search'] = $this->scopeConfig->isSetFlag(
 			'cc_uk/gfx_options/searchbar_auto_search',
 			\Magento\Store\Model\ScopeInterface::SCOPE_STORE
@@ -69,8 +70,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 			'cc_uk/gfx_options/searchbar_clean_postsearch',
 			\Magento\Store\Model\ScopeInterface::SCOPE_STORE
 		);
+		*/
 		// special search configs
-		$cfg['searchbar_type'] = $this->getCfg('gfx_options/searchbar_type');
+		$cfg['searchbar_type'] = 'traditional';
 
 		// errors
 		$cfg['error_msg'] = [];

@@ -113,3 +113,6 @@
 .search-subtext{
 	padding: 0.25em 0.5em;
 }
+.crafty_address_field.crafty_address_field_hidden{
+	display: none;
+}
