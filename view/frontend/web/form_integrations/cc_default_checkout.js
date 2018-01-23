@@ -15,7 +15,7 @@ function activate_cc_m2_uk(){
 			dom: {},
 			sort_fields: {
 				active: true,
-				parent: 'div.field:not(.additional)'
+				parent: '.field:not(.additional)'
 			},
 			search_type: crafty_cfg.searchbar_type,
 			hide_fields: crafty_cfg.hide_fields,
@@ -68,7 +68,7 @@ var cc_index = 0;
 requirejs(['jquery'], function( $ ) {
 	jQuery( document ).ready(function() {
 		if(crafty_cfg.enabled){
-			setInterval(activate_cc_m2,200);
+			setInterval(activate_cc_m2_uk,200);
 		}
 	});
 });

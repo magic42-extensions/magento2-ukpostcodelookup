@@ -15,9 +15,6 @@
 				<backend_accesstoken backend_model="Magento\Config\Model\Config\Backend\Encrypted">xxxxx-xxxxx-xxxxx-xxxxx</backend_accesstoken>
 			</main_options>
 			<gfx_options>
-				<searchbar_type>traditional</searchbar_type>
-				<searchbar_auto_search>0</searchbar_auto_search>
-				<searchbar_clean_postsearch>1</searchbar_clean_postsearch>
 				<hide_fields>0</hide_fields>
 			</gfx_options>
 			<txt_options>

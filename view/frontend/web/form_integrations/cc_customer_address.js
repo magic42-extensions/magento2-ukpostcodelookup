@@ -17,7 +17,7 @@ function activate_cc_m2_uk(){
 			dom: {},
 			sort_fields: {
 				active: true,
-				parent: 'div.field:not(.additional)'
+				parent: '.field:not(.additional)'
 			},
 			search_type: crafty_cfg.searchbar_type,
 			hide_fields: crafty_cfg.hide_fields,
