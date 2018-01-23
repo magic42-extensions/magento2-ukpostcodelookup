@@ -48,7 +48,7 @@ function activate_cc_m2_uk(){
 				jQuery.extend(active_cfg, cfg);
 				active_cfg.id = "m2_"+cc_index;
 				var form = postcode_elements.eq(index).closest('fieldset');
-				console.log(form);
+				//console.log(form);
 				cc_index++;
 				active_cfg.dom = {
 					company:		form.find(dom.company),

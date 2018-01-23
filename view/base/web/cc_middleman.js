@@ -81,9 +81,9 @@ cc_ui_handler.prototype.country_change = function(country){
 		this.search_object.find('.search-bar .action').hide();
 	}
 	if(this.cfg.hide_fields && (active_countries.indexOf(country) != -1) && (this.cfg.dom.postcode.val() === "")){
-		this.search_object.closest(this.cfg.sort_fields.parent).parent().find('.crafty_address_field').hide();
+		this.search_object.closest(this.cfg.sort_fields.parent).parent().find('.crafty_address_field').addClass('crafty_address_field_hidden');
 	} else {
-		this.search_object.closest(this.cfg.sort_fields.parent).parent().find('.crafty_address_field').show();
+		this.search_object.closest(this.cfg.sort_fields.parent).parent().find('.crafty_address_field').removeClass('crafty_address_field_hidden');
 	}
 };
 
@@ -139,10 +139,19 @@ cc_ui_handler.prototype.addui = function(){
 		var new_container = postcode_elem.closest(this.cfg.sort_fields.parent);
 		new_container.addClass('search-container').attr('id',this.cfg.id).addClass('type_3');
 		// add search list
-		postcode_elem.closest('.search-bar').after('<div class="search-list" style="display: none;">'
-							+ '<select></select>'
-						+ '</div>'
-						+ '<div class="mage-error" generated><div class="search-subtext"></div></div>');
+		if (this.cfg.dom.country.hasClass('admin__control-select')) {
+			postcode_elem.closest('.search-bar').after('<div class="search-list" style="display: none;">'+
+								'<select class="admin__control-select"></select>'+
+								'</div>'+
+								'<div class="mage-error" generated><div class="search-subtext"></div></div>');
+		}
+		else {
+			postcode_elem.closest('.search-bar').after('<div class="search-list" style="display: none;">'+
+									'<select></select>'+
+						 			'</div>'+
+						 			'<div class="mage-error" generated><div class="search-subtext"></div></div>');
+		}
+
 	}
 
 	// apply postcode lookup (by button)
@@ -254,7 +263,7 @@ cc_ui_handler.prototype.select = function(postcode, id){
 	}
 
 	if(this.cfg.hide_fields){
-		jQuery('.crafty_address_field').show();
+		jQuery('.crafty_address_field').removeClass('crafty_address_field_hidden');
 	}
 	if(this.cfg.search_type != 'traditional' && this.cfg.clean_postsearch){
 		this.search_object.find('.search-box').val('');
