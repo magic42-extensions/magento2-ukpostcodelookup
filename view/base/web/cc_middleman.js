@@ -4,7 +4,6 @@
  */
 
 function cc_ui_handler(cfg){
-	//console.log(cfg);
 	this.cfg = cfg;
 
 	var lines = 0;
