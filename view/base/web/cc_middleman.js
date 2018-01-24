@@ -31,8 +31,14 @@ cc_ui_handler.prototype.sort = function(is_uk){
 	var country = elems.country.parents(this.cfg.sort_fields.parent).last();
 	// Sort disabled; position country on top
 	var company = elems.company.parents(this.cfg.sort_fields.parent).last();
+	var line_1 = elems.address_1.parents(this.cfg.sort_fields.parent).last();
 	var postcode = elems.postcode.parents(this.cfg.sort_fields.parent).last();
-	country.insertBefore(company);
+	if (company.length) {
+		country.insertBefore(company);
+	}
+	else {
+		country.insertBefore(line_1);
+	}
 	var searchContainer = {};
 	if(this.cfg.search_type != 'traditional'){
 		searchContainer = this.search_object.parents(this.cfg.sort_fields.parent).last();
@@ -54,12 +60,7 @@ cc_ui_handler.prototype.sort = function(is_uk){
 		}
 	}
 };
-/*
-cc_ui_handler.prototype.sortTool = function(a,b){
-	var a_holder = a.parents(this.cfg.sort_fields.parent).last();
-	var b_holder = b.parents(this.cfg.sort_fields.parent).last();
-	a_holder.after(b_holder);
-}*/
+
 cc_ui_handler.prototype.country_change = function(country){
 
 	var active_countries = ['GB','IM','JE','GY'];
@@ -106,23 +107,6 @@ cc_ui_handler.prototype.addui = function(){
 	var that = this;
 	// apply dom elements
 	var html = '';
-	switch(this.cfg.search_type){
-		case "searchbar_text":
-			html = '<div class="search-container type_2" id="' + this.cfg.id + '">'
-				+ '<div class="search-bar">'
-					+ '<input class="search-box" type="text" placeholder="' + this.cfg.txt.search_placeholder + '">'
-					+ '<button type="button" class="action primary">'
-					+ '<span>Find Address</span></button>'
-				+ '</div>'
-				+ '<div class="search-list" style="display: none;">'
-					+ '<ul>'
-					+ '</ul>'
-					+ '<div class="extra-info" style="display: none;"><div class="search-subtext"></div></div>'
-				+ '</div>'
-				+ '<div class="mage-error" generated><div class="search-subtext"></div></div>'
-			+ '</div>';
-		break;
-	}
 
 	if(this.cfg.search_type != 'traditional' && typeof this.cfg.search_wrapper !== 'undefined'){
 		html = this.cfg.search_wrapper.before + html + this.cfg.search_wrapper.after;
@@ -134,8 +118,8 @@ cc_ui_handler.prototype.addui = function(){
 		var postcode_elem = this.cfg.dom.postcode;
 		postcode_elem.wrap('<div class="search-bar"></div>');
 		postcode_elem.addClass('search-box');
-		postcode_elem.after('<button type="button" class="action primary">'
-					+ '<span>Find Address</span></button>');
+		postcode_elem.after('<button type="button" class="action primary">'+
+						'<span>'+this.cfg.txt.search_buttontext+'</span></button>');
 		var new_container = postcode_elem.closest(this.cfg.sort_fields.parent);
 		new_container.addClass('search-container').attr('id',this.cfg.id).addClass('type_3');
 		// add search list
