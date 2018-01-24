@@ -256,7 +256,6 @@ cc_ui_handler.prototype.lookup_iwd = function(postcode){
 			elems.push(endpoint.line_2);
 		new_html += '<div class="iwd_opc_select_option option_element" data-id="'+i+'">'+dataset.town+', ' + elems.join(', ') + '</div>';
 	}
-	debugger;
 	var search_list = this.search_object.closest('div.fieldset').find('.crafty_iwd_container');
 	search_list.html('<div class="iwd_opc_select_option selected">Select Your Address</div>'+new_html);
 	search_list.closest('div.crafty-results-container').show();
