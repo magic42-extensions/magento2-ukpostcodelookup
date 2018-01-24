@@ -46,6 +46,10 @@ cc_ui_handler.prototype.sort = function(is_uk){
 	} else {
 		searchContainer = this.search_object;
 		country.after(searchContainer);
+		//IWD checkout - temporary
+		if (jQuery('.crafty-results-container').length > 0) {
+			searchContainer.after(searchContainer.closest('.fieldset').find('.crafty-results-container'));
+		}
 	}
 
 	if(this.cfg.hide_fields){
@@ -129,6 +133,13 @@ cc_ui_handler.prototype.addui = function(){
 								'</div>'+
 								'<div class="mage-error" generated><div class="search-subtext"></div></div>');
 		}
+		//IWD Checkout - temporary
+		else if(jQuery('.iwd_opc_select_container').length > 0) {
+			postcode_elem.closest('.field').after('<div class="field crafty-results-container" style="display:none;"><div class="control"><div class="scroll-wrapper" tabindex="0" style="position: relative;">'+
+			'<div class="iwd_opc_select_container scroll-content selected crafty_iwd_container" style="height: auto;">'+
+			'</div><div class="scroll-element scroll-x"><div class="scroll-element_outer"><div class="scroll-element_size"></div><div class="scroll-element_track"></div><div class="scroll-bar" style="width: 100px;"></div></div></div><div class="scroll-element scroll-y"><div class="scroll-element_outer"><div class="scroll-element_size"></div>'+
+			'<div class="scroll-element_track"></div><div class="scroll-bar" style="height: 100px; top: 0px;"></div></div></div></div></div></div>');
+		}
 		else {
 			postcode_elem.closest('.search-bar').after('<div class="search-list" style="display: none;">'+
 									'<select></select>'+
@@ -141,7 +152,13 @@ cc_ui_handler.prototype.addui = function(){
 	// apply postcode lookup (by button)
 	this.search_object = jQuery('.search-container[id="'+this.cfg.id+'"]');
 	this.search_object.find('.action').on('click',function(){
-		that.lookup(that.search_object.find('.search-box').val());
+		//IWD Chceckout - temporary
+		if (jQuery('.iwd_opc_select_container').length > 0) {
+			that.lookup_iwd(that.search_object.find('.search-box').val());
+		}
+		else {
+			that.lookup(that.search_object.find('.search-box').val());
+		}
 	});
 	// apply hiding of list on input change && auto search
 	this.search_object.find('.search-box').on('keyup',function(){
@@ -218,6 +235,55 @@ cc_ui_handler.prototype.lookup = function(postcode){
 		});
 	}
 };
+
+cc_ui_handler.prototype.lookup_iwd = function(postcode){
+	var dataset = this.cc_core.search(postcode);
+	if(typeof dataset.error_code != "undefined"){
+		this.prompt_error(dataset.error_code);
+		return;
+	}
+	var new_html = "";
+	for(var i=0; i < dataset.delivery_point_count; i++){
+		var elems = [];
+		var endpoint = dataset.delivery_points[i];
+		if(endpoint.department_name !== "")
+			elems.push(endpoint.department_name);
+		if(endpoint.organisation_name !== "")
+			elems.push(endpoint.organisation_name);
+		if(endpoint.line_1 !== "")
+			elems.push(endpoint.line_1);
+		if(endpoint.line_2 !== "")
+			elems.push(endpoint.line_2);
+		new_html += '<div class="iwd_opc_select_option option_element" data-id="'+i+'">'+dataset.town+', ' + elems.join(', ') + '</div>';
+	}
+	debugger;
+	var search_list = this.search_object.closest('div.fieldset').find('.crafty_iwd_container');
+	search_list.html('<div class="iwd_opc_select_option selected">Select Your Address</div>'+new_html);
+	search_list.closest('div.crafty-results-container').show();
+
+	this.search_object.find('.extra-info .search-subtext').html(dataset.town);
+	this.search_object.find('.extra-info').show();
+	var that = this;
+
+	jQuery(search_list).find('div.option_element').off('click');
+
+	jQuery(search_list).find('div.option_element').on('click', function(){
+		that.select(postcode, jQuery(this).attr('data-id'));
+		search_list.closest('div.crafty-results-container').hide();
+	});
+
+	if(that.cfg.search_type != 'traditional'){
+		this.search_object.on('focusout',function(){
+			// give a tiny time for the on click event to trigger first
+			setTimeout(function(){
+				search_list.hide();
+			}, 250);
+		});
+	}
+};
+
+
+
 cc_ui_handler.prototype.prompt_error = function(error_code){
 	if(!this.cfg.error_msg.hasOwnProperty(error_code)){
 		// simplyfy complex error messages
