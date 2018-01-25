@@ -88,7 +88,6 @@ cc_rapid.prototype.fetch_data = function(postcode){
 			if (this.status >= 200 && this.status < 400){
 				// Success!
 				data = JSON.parse(this.responseText);
-				//console.log(data);
 			} else {
 				data = { error_code: "0004" };
 			}
