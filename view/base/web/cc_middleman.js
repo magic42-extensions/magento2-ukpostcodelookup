@@ -66,7 +66,7 @@ cc_ui_handler.prototype.sort = function(is_uk){
 
 cc_ui_handler.prototype.country_change = function(country){
 
-	var active_countries = ['GB','IM','JE','GY'];
+	var active_countries = ['GB','IM','JE','GG'];
 	if(active_countries.indexOf(country) != -1){
 		if(this.cfg.sort_fields.active){
 			this.sort(true);
