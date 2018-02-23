@@ -436,7 +436,7 @@ cc_ui_handler.prototype.prompt_error = function(error_code){
 cc_ui_handler.prototype.countyFiller = function(element, county_value){
 	if(element.tagName == 'SELECT'){
 		var target_val = '';
-		var options = element.getElementsByTagName('option');
+		var options = element[0].getElementsByTagName('option');
 		if(options.length){
 			var found = 0;
 
@@ -550,10 +550,10 @@ cc_ui_handler.prototype.countyFiller = function(element, county_value){
 					target_val = options[matches.ids[0]].value;
 				}
 			}
-			element.value = target_val;
+			element.val(target_val);
 		}
 	} else {
-		element.value = county_value;
+		element.val(county_value);
 	}
 }
 
@@ -576,14 +576,19 @@ cc_ui_handler.prototype.select = function(postcode, id){
 	for(var i=1; i<=this.cfg.core.lines; i++){
 		this.cfg.dom["address_"+i].val(dataset.delivery_points[id]["line_"+i]);
 	}
+	var county_line = '';
 	switch(this.cfg.county_data){
 		case 'former_postal':
+			county_line = dataset.postal_county;
 			break;
 		case 'traditional':
-			this.cfg.dom.county
+			county_line = dataset.traditional_county;
 			break;
 	}
-
+	if(county_line != ''){
+		this.countyFiller(this.cfg.dom.county, county_line)
+		this.countyFiller(this.cfg.dom.county_list, county_line)
+	}
 
 	if(this.cfg.hide_fields){
 		jQuery('.crafty_address_field').removeClass('crafty_address_field_hidden');

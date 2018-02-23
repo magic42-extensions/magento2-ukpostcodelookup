@@ -45,40 +45,43 @@ function activate_cc_m2_uk(){
 				jQuery.extend(active_cfg, cfg);
 				active_cfg.id = "m2_"+cc_index;
 				var form = postcode_elements.eq(index).closest('fieldset');
+				postcode_elements.eq(index).data('cc','1');
 				cc_index++;
-				active_cfg.dom = {
-					company:		form.find(dom.company),
-					address_1:		form.find(dom.address_1),
-					address_2:		form.find(dom.address_2),
-					postcode:		postcode_elements.eq(index),
-					town:			form.find(dom.town),
-					county:			form.find(dom.county),
-					county_list:	form.find(dom.county_list),
-					country:		form.find(dom.country)
-				};
+				setTimeout(function(){
+					active_cfg.dom = {
+						company:		form.find(dom.company),
+						address_1:		form.find(dom.address_1),
+						address_2:		form.find(dom.address_2),
+						postcode:		postcode_elements.eq(index),
+						town:			form.find(dom.town),
+						county:			form.find(dom.county),
+						county_list:	form.find(dom.county_list),
+						country:		form.find(dom.country)
+					};
 
-				// modify the Layout
-				var postcode_elem = active_cfg.dom.postcode;
-				postcode_elem.wrap('<div class="search-bar"></div>');
-				postcode_elem.after('<button type="button" class="action primary">'+
-				'<span>'+active_cfg.txt.search_buttontext+'</span></button>');
+					// modify the Layout
+					var postcode_elem = active_cfg.dom.postcode;
+					postcode_elem.wrap('<div class="search-bar"></div>');
+					postcode_elem.after('<button type="button" class="action primary">'+
+					'<span>'+active_cfg.txt.search_buttontext+'</span></button>');
 
-				// ADMIN
-				postcode_elem.closest('.search-bar').after('<div class="search-list" style="display: none;">'+
-					'<select class="admin__control-select"></select>'+
-					'</div><div class="mage-error" generated><div class="search-subtext"></div></div>');
+					// ADMIN
+					postcode_elem.closest('.search-bar').after('<div class="search-list" style="display: none;">'+
+						'<select class="admin__control-select"></select>'+
+						'</div><div class="mage-error" generated><div class="search-subtext"></div></div>');
 
-				// input after postcode
-				var new_container = postcode_elem.closest(active_cfg.sort_fields.parent);
-				new_container.addClass('search-container').attr('id',active_cfg.id).addClass('type_3');
+					// input after postcode
+					var new_container = postcode_elem.closest(active_cfg.sort_fields.parent);
+					new_container.addClass('search-container').attr('id',active_cfg.id).addClass('type_3');
 
-				active_cfg.ui = {
-					top_elem: '.admin__fieldset'
-				};
+					active_cfg.ui = {
+						top_elem: '.admin__fieldset'
+					};
 
-				active_cfg.dom.postcode.data('cc','1');
-				var cc_generic = new cc_ui_handler(active_cfg);
-				cc_generic.activate();
+					//active_cfg.dom.postcode.data('cc','1'); // moved to the top
+					var cc_generic = new cc_ui_handler(active_cfg);
+					cc_generic.activate();
+				},250);
 			}
 		});
 	}
