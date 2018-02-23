@@ -17,17 +17,10 @@ function activate_cc_m2_uk(){
 				active: true,
 				parent: '.field:not(.additional)'
 			},
-			search_type: crafty_cfg.searchbar_type,
 			hide_fields: crafty_cfg.hide_fields,
-			auto_search: crafty_cfg.auto_search,
-			clean_postsearch: crafty_cfg.clean_postsearch,
-			only_uk: true,
-			search_wrapper: {
-				before: '<div class="field"><label class="label">'+crafty_cfg.txt.search_label+'</label><div class="control">',
-				after: '</div></div>'
-			},
 			txt: crafty_cfg.txt,
-			error_msg: crafty_cfg.error_msg
+			error_msg: crafty_cfg.error_msg,
+			county_data: crafty_cfg.advanced.county_data,
 		};
 		var dom = {
 			company:	'[name="company"]',
@@ -46,6 +39,7 @@ function activate_cc_m2_uk(){
 				jQuery.extend(active_cfg, cfg);
 				active_cfg.id = "m2_"+cc_index;
 				var form = postcode_elements.eq(index).closest('form');
+
 				cc_index++;
 				active_cfg.dom = {
 					company:		form.find(dom.company),
@@ -57,6 +51,52 @@ function activate_cc_m2_uk(){
 					county_list:	form.find(dom.county_list),
 					country:		form.find(dom.country)
 				};
+
+				// modify the Layout
+				var postcode_elem = active_cfg.dom.postcode;
+				postcode_elem.wrap('<div class="search-bar"></div>');
+				postcode_elem.after('<button type="button" class="action primary">'+
+				'<span>'+active_cfg.txt.search_buttontext+'</span></button>');
+				// STANDARD
+				postcode_elem.closest('.search-bar').after('<div class="search-list" style="display: none;"><select></select></div>'+
+										'<div class="mage-error" generated><div class="search-subtext"></div></div>');
+
+				/* IWD
+				postcode_elem.closest('.field').after('<div class="field crafty-results-container" style="display:none;"><div class="control"><div class="scroll-wrapper" tabindex="0" style="position: relative;">'+
+					'<div class="iwd_opc_select_container scroll-content selected search-list" style="height: auto;">'+
+					'</div><div class="scroll-element scroll-x"><div class="scroll-element_outer"><div class="scroll-element_size"></div><div class="scroll-element_track"></div><div class="scroll-bar" style="width: 100px;"></div></div></div><div class="scroll-element scroll-y"><div class="scroll-element_outer"><div class="scroll-element_size"></div>'+
+					'<div class="scroll-element_track"></div><div class="scroll-bar" style="height: 100px; top: 0px;"></div></div></div></div></div></div>');
+				*/
+
+				/* ADMIN
+				postcode_elem.closest('.search-bar').after('<div class="search-list" style="display: none;">'+
+					'<select class="admin__control-select"></select>'+
+					'</div><div class="mage-error" generated><div class="search-subtext"></div></div>');
+				*/
+
+				// input after postcode
+				var new_container = postcode_elem.closest(active_cfg.sort_fields.parent);
+				new_container.addClass('search-container').attr('id',active_cfg.id).addClass('type_3');
+
+				//active_cfg.ui = {
+					/*select_builder: function(lines, search_list){
+						var html = '';
+						for(var i=0; i<lines.length; i++){
+							html += '<div class="iwd_opc_select_option option_element" data-id="'+i+'">'+lines[i]+'</div>';
+						}
+						search_list.html(html);
+						search_list.find('div.iwd_opc_select_option:eq(0)').addClass('selected')
+						search_list.closest('div.field').show();
+					},
+					select_trigger: function(search_list, cc){
+						jQuery(search_list).find('div.option_element').off('click');
+						jQuery(search_list).find('div.option_element').on('click', function(){
+							cc.select(postcode, jQuery(this).attr('data-id'));
+							search_list.closest('div.field').hide();
+						});
+					}*/
+				//}
+
 				active_cfg.dom.postcode.data('cc','1');
 				var cc_generic = new cc_ui_handler(active_cfg);
 				cc_generic.activate();

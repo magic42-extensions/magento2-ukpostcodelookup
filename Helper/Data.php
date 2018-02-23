@@ -52,7 +52,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 		}
 		$cfg['key'] = $this->_escaper->escapeHtml($token);
 
-
 		$cfg['enabled'] = $this->scopeConfig->isSetFlag(
 			'cc_uk/main_options/frontend_enabled',
 			\Magento\Store\Model\ScopeInterface::SCOPE_STORE
@@ -61,8 +60,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 			'cc_uk/gfx_options/hide_fields',
 			\Magento\Store\Model\ScopeInterface::SCOPE_STORE
 		);
-		// special search configs
-		$cfg['searchbar_type'] = 'traditional';
 
 		// errors
 		$cfg['error_msg'] = [];
@@ -74,6 +71,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 		$cfg['txt']["search_label"] = $this->getCfg('txt_options/search_label');
 		$cfg['txt']["search_placeholder"] = $this->getCfg('txt_options/search_placeholder');
 		$cfg['txt']['search_buttontext'] = $this->getCfg('txt_options/search_buttontext');
+
+		$cfg['advanced']['county_data'] = $this->getCfg('advanced/county_data');
 
 		return json_encode($cfg);
 	}
@@ -98,16 +97,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 			'cc_uk/main_options/backend_enabled',
 			\Magento\Store\Model\ScopeInterface::SCOPE_STORE
 		);
-		$cfg['auto_search'] = $this->scopeConfig->isSetFlag(
-			'cc_uk/gfx_options/searchbar_auto_search',
-			\Magento\Store\Model\ScopeInterface::SCOPE_STORE
-		);
-		$cfg['clean_postsearch'] = $this->scopeConfig->isSetFlag(
-			'cc_uk/gfx_options/searchbar_clean_postsearch',
-			\Magento\Store\Model\ScopeInterface::SCOPE_STORE
-		);
-
-		$cfg['searchbar_type'] = 'traditional';
 		$cfg['error_msg'] = [];
 		$cfg['error_msg']["0001"] = $this->getCfg('txt_options/error_msg_1');
 		$cfg['error_msg']["0002"] = $this->getCfg('txt_options/error_msg_2');
@@ -117,6 +106,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 		$cfg['txt']["search_label"] = $this->getCfg('txt_options/search_label');
 		$cfg['txt']["search_placeholder"] = $this->getCfg('txt_options/search_placeholder');
 		$cfg['txt']["search_buttontext"] = $this->getCfg('txt_options/search_buttontext');
+
+		$cfg['advanced']['county_data'] = $this->getCfg('advanced/county_data');
+
 		return json_encode($cfg);
 
 	}
