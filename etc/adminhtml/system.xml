@@ -59,6 +59,14 @@
 					<label>Error Msg #4</label>
 				</field>
 			</group>
+			<group id="advanced" translate="label" type="text" sortOrder="50"  showInDefault="1">
+				<label>Advanced</label>
+				<field id="county_data" type="select" sortOrder="1" showInDefault="1">
+					<label>County Data</label>
+					<source_model>Craftyclicks\Ukpostcodelookup\Model\Source\CountyOption</source_model>
+					<comment>County data is not required for UK addressing. Select a type of county data, if you need this data for legacy software requirements. "Empty" will erase any data already present in the input field, but still allows the user to enter any values later.</comment>
+				</field>
+			</group>
 		</section>
 	</system>
 </config>
