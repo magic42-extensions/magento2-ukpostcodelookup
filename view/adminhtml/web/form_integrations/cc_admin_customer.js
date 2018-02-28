@@ -22,17 +22,10 @@ function activate_cc_m2_uk(){
 				*/
 				custom_order: ['company', 'country', 'company', 'postcode']
 			},
-			search_type: crafty_cfg.searchbar_type,
 			hide_fields: crafty_cfg.hide_fields,
-			auto_search: crafty_cfg.auto_search,
-			clean_postsearch: crafty_cfg.clean_postsearch,
-			only_uk: true,
-			search_wrapper: {
-				before: '<div class="admin__field"><label class="admin__field-label">'+crafty_cfg.txt.search_label+'</label><div class="admin__field-control">',
-				after: '</div></div>'
-			},
 			txt: crafty_cfg.txt,
-			error_msg: crafty_cfg.error_msg
+			error_msg: crafty_cfg.error_msg,
+			county_data: crafty_cfg.advanced.county_data
 		};
 		var dom = {
 			company:	'[name$="[company]"]',
@@ -52,6 +45,22 @@ function activate_cc_m2_uk(){
 				jQuery.extend(active_cfg, cfg);
 				active_cfg.id = "m2_"+cc_index;
 				var form = postcode_elements.eq(index).closest('fieldset');
+				// check if all form elements exist correctly
+				// the way this form loads, initially region and other fields might be missing
+				if(!(
+					0 != form.find('[name$="[company]"]').length &&
+					0 != form.find('[name$="[street][0]"]').length &&
+					0 != form.find('[name$="[street][1]"]').length &&
+					0 != form.find('[name$="[postcode]"]').length &&
+					0 != form.find('[name$="[city]"]').length &&
+					0 != form.find('[name$="[region]"]').length &&
+					0 != form.find('select[name$="[region_id]"]').length &&
+					0 != form.find('select[name$="[country_id]"]').length
+				)){
+					// if anything is missing (some parts get loaded in a second ajax pass)
+					return;
+				}
+
 				cc_index++;
 				active_cfg.dom = {
 					company:		form.find(dom.company),
@@ -63,6 +72,26 @@ function activate_cc_m2_uk(){
 					county_list:	form.find(dom.county_list),
 					country:		form.find(dom.country)
 				};
+
+				// modify the Layout
+				var postcode_elem = active_cfg.dom.postcode;
+				postcode_elem.wrap('<div class="search-bar"></div>');
+				postcode_elem.after('<button type="button" class="action primary">'+
+				'<span>'+active_cfg.txt.search_buttontext+'</span></button>');
+
+				// ADMIN
+				postcode_elem.closest('.search-bar').after('<div class="search-list" style="display: none;">'+
+					'<select class="admin__control-select"></select>'+
+					'</div><div class="mage-error" generated><div class="search-subtext"></div></div>');
+
+				// input after postcode
+				var new_container = postcode_elem.closest(active_cfg.sort_fields.parent);
+				new_container.addClass('search-container').attr('id',active_cfg.id).addClass('type_3');
+
+				active_cfg.ui = {
+					top_elem: '.admin__fieldset'
+				};
+
 				active_cfg.dom.postcode.data('cc','1');
 				var cc_generic = new cc_ui_handler(active_cfg);
 				cc_generic.activate();

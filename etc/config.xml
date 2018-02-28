@@ -26,6 +26,9 @@
 				<error_msg_3>Unable to connect to address lookup server.</error_msg_3>
 				<error_msg_4>An unexpected error occured.</error_msg_4>
 			</txt_options>
+			<advanced>
+				<county_data>none</county_data>
+			</advanced>
 		</cc_uk>
 	</default>
 </config>

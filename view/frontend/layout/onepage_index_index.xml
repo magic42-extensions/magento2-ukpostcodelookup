@@ -3,7 +3,7 @@
 	  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
 	<head>
 		<script src="Craftyclicks_Ukpostcodelookup::cc_ukpcl_lib.js"/>
-		<script src="Craftyclicks_Ukpostcodelookup::form_integrations/cc_default_checkout.js"/>
+		<script src="Craftyclicks_Ukpostcodelookup::form_integrations/cc_iwd_checkout.js"/>
 		<css src="Craftyclicks_Ukpostcodelookup::cc_rapid2.css"/>
 	</head>
 	<body>
