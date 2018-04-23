@@ -589,7 +589,30 @@ cc_ui_handler.prototype.select = function(postcode, id){
 		this.countyFiller(this.cfg.dom.county, county_line)
 		this.countyFiller(this.cfg.dom.county_list, county_line)
 	}
-
+	// Change country according to postcode
+	if (typeof this.cfg.dom.country != 'undefined') {
+		var crown_dependencies = ['GY', 'JE', 'IM'];
+		var postcode_area = dataset.postcode.substring(0,2);
+		switch(postcode_area) {
+			case 'GY':
+				if (this.cfg.dom.country.find('option[value="GG"]').length) {
+					this.cfg.dom.country.val('GG');
+				}
+			break;
+			case 'JE':
+				if (this.cfg.dom.country.find('option[value="JE"]').length) {
+					this.cfg.dom.country.val('JE');
+				}
+			break;
+			case 'IM':
+				if (this.cfg.dom.country.find('option[value="IM"]').length) {
+					this.cfg.dom.country.val('IM');
+				}
+			break;
+			default:
+				this.cfg.dom.country.val('UK');
+		}
+	}
 	if(this.cfg.hide_fields){
 		jQuery('.crafty_address_field').removeClass('crafty_address_field_hidden');
 	}
