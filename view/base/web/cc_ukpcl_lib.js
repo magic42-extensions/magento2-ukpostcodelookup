@@ -610,7 +610,7 @@ cc_ui_handler.prototype.select = function(postcode, id){
 				}
 			break;
 			default:
-				this.cfg.dom.country.val('UK');
+				this.cfg.dom.country.val('GB');
 		}
 	}
 	if(this.cfg.hide_fields){
