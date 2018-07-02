@@ -388,7 +388,7 @@ cc_ui_handler.prototype.lookup = function(postcode){
 			elems.push(endpoint.line_1);
 		if(endpoint.line_2 !== "")
 			elems.push(endpoint.line_2);
-		results.push(dataset.town+', ' + elems.join(', '));
+		results.push(elems.join(', ')+', '+dataset.town);
 	}
 	this.cfg.ui.top_elem = this.cfg.ui.top_elem || 'form';
 	var search_list = this.search_object.closest(this.cfg.ui.top_elem).find('.search-list');
