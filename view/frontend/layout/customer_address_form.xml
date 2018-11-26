@@ -2,7 +2,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
 	<head>
-		<script src="Craftyclicks_Ukpostcodelookup::cc_ukpcl_lib.js"/>
+		<script src="Craftyclicks_Ukpostcodelookup::crafty_postcode.class.js"/>
 		<script src="Craftyclicks_Ukpostcodelookup::form_integrations/cc_customer_address.js"/>
 		<css src="Craftyclicks_Ukpostcodelookup::cc_rapid2.css"/>
 	</head>
