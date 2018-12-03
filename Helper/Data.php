@@ -68,7 +68,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 		$cfg['error_msg']["0003"] = $this->getCfg('txt_options/error_msg_3');
 		$cfg['error_msg']["0004"] = $this->getCfg('txt_options/error_msg_4');
 		$cfg['txt'] = [];
-		$cfg['txt']["search_label"] = $this->getCfg('txt_options/search_label');
 		$cfg['txt']["search_placeholder"] = $this->getCfg('txt_options/search_placeholder');
 		$cfg['txt']['search_buttontext'] = $this->getCfg('txt_options/search_buttontext');
 
@@ -103,7 +102,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 		$cfg['error_msg']["0003"] = $this->getCfg('txt_options/error_msg_3');
 		$cfg['error_msg']["0004"] = $this->getCfg('txt_options/error_msg_4');
 		$cfg['txt'] = [];
-		$cfg['txt']["search_label"] = $this->getCfg('txt_options/search_label');
 		$cfg['txt']["search_placeholder"] = $this->getCfg('txt_options/search_placeholder');
 		$cfg['txt']["search_buttontext"] = $this->getCfg('txt_options/search_buttontext');
 

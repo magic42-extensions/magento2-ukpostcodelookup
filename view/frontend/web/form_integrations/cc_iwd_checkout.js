@@ -209,6 +209,15 @@ function CraftyClicksMagento2Class() {
 		}
 
 		jQuery('.' + this.misc.prefix + '_cp_address_class').show();
+
+		// trigger change event on address fields to satisfy magento required fields
+		jQuery('#'+this.fields.company_id).trigger('change');
+		jQuery('#'+this.fields.address_1_id).trigger('change');
+		jQuery('#'+this.fields.address_2_id).trigger('change');
+		jQuery('#'+this.fields.postcode_id).trigger('change');
+		jQuery('#'+this.fields.town_id).trigger('change');
+		jQuery('#'+this.fields.county_id).trigger('change');
+		jQuery('#'+this.fields.country_id).trigger('change');
 	}
 
 	this.result_error = function() {
