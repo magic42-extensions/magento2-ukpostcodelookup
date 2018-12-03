@@ -203,6 +203,28 @@ function CraftyClicksMagento2Class() {
 	}
 
 	this.result_selected = function() {
+		// update country field if user selects address from GG/JE, etc.
+		switch(jQuery('#' + this.fields.postcode_id).val().substring(0,2)){
+			case "GY":
+			jQuery('#' + this.fields.country_id).val("GG");
+			break;
+			case "JE":
+			jQuery('#' + this.fields.country_id).val("JE");
+			break;
+			case "IM":
+			jQuery('#' + this.fields.country_id).val("IM");
+			break;
+			default:
+			jQuery('#' + this.fields.country_id).val("GB");
+			break;
+		}
+
+		if (crafty_cfg.advanced.county_data == 'none') {
+			jQuery('#'+this.fields.county_id).val('')
+		}
+
+		jQuery('.' + this.misc.prefix + '_cp_address_class').show();
+
 		// trigger change event on address fields to satisfy magento required fields
 		jQuery('#'+this.cp_obj.config["elem_company"]).trigger('change');
 		jQuery('#'+this.cp_obj.config["elem_street1"]).trigger('change');
@@ -211,28 +233,6 @@ function CraftyClicksMagento2Class() {
 		jQuery('#'+this.cp_obj.config["elem_town"]).trigger('change');
 		jQuery('#'+this.cp_obj.config["elem_county"]).trigger('change');
 		jQuery('#'+this.cp_obj.config["elem_country"]).trigger('change');
-
-		// update country field if user selects address from GG/JE, etc.
-		switch(jQuery('#' + this.fields.postcode_id).val().substring(0,2)){
-			case "GY":
-				jQuery('#' + this.fields.country_id).val("GG");
-				break;
-			case "JE":
-				jQuery('#' + this.fields.country_id).val("JE");
-				break;
-			case "IM":
-				jQuery('#' + this.fields.country_id).val("IM");
-				break;
-			default:
-				jQuery('#' + this.fields.country_id).val("GB");
-				break;
-		}
-
-		if (crafty_cfg.advanced.county_data == 'none') {
-			jQuery('#'+this.fields.county_id).val('')
-		}
-
-		jQuery('.' + this.misc.prefix + '_cp_address_class').show();
 	}
 
 	this.result_error = function() {
