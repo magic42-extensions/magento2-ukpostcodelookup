@@ -82,6 +82,9 @@ function CraftyClicksMagento2Class() {
 				jQuery('#' + this.misc.prefix + '_cp_result_display').show();
 				jQuery('#' + this.fields.postcode_id).closest('.field').addClass("search-container type_3");
 			}
+
+			// disable autofill
+			jQuery('#' + this.fields.postcode_id).attr('autocomplete', 'new-password')
 		}
 
 		if ('initial' == this.current_setup && crafty_cfg.hide_fields) {
@@ -115,6 +118,9 @@ function CraftyClicksMagento2Class() {
 
 			// show fields
 			jQuery('.' + this.misc.prefix + '_cp_address_class').show();
+
+			// enable autofill
+			jQuery('#' + this.fields.postcode_id).attr('autocomplete', 'postal-code')
 
 			this.current_setup = 'non_uk';
 		}
