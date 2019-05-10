@@ -52,10 +52,14 @@ function CraftyClicksMagento2Class() {
 
 				jQuery('#'+this.fields.postcode_id).closest('.search-bar').after('<div id="' + this.misc.prefix + '_cp_result_display" class="search-list"></div>');
 				jQuery('#'+this.fields.postcode_id).closest('.admin__field').addClass('search-container type_3')
+				jQuery('.search-container').css({width: "auto", display: "block"})
+
 			} else {
 				jQuery('#' + this.misc.prefix + '_cp_button_id').show();
 				jQuery('#' + this.misc.prefix + '_cp_result_display').show();
 				jQuery('#' + this.fields.postcode_id).closest('.admin__field').addClass("search-container type_3");
+				// move postcode input back inside search bar
+				jQuery('#'+this.fields.postcode_id).closest('.admin__field').find('.search-bar').prepend(jQuery('#'+this.fields.postcode_id))
 			}
 		}
 
@@ -77,6 +81,19 @@ function CraftyClicksMagento2Class() {
 			}
 
 			jQuery('#' + this.misc.prefix + '_cp_result_display').children('select').remove();
+
+			// revert postcode field to default state
+			// move input up
+			var postcode = '#'+this.fields.postcode_id
+			var formControl = jQuery(postcode).closest('.admin__field-control')
+			formControl.prepend(jQuery(postcode))
+
+			// remove placeholder
+			jQuery(postcode).attr('placeholder', '')
+
+			// remove search-container and type3 classes
+			jQuery(postcode).closest('.admin__field').removeClass('search-container')
+			jQuery(postcode).closest('.admin__field').removeClass('type_3')
 
 			this.current_setup = 'non_uk';
 		}
@@ -206,7 +223,7 @@ function CraftyClicksMagento2Class() {
 
 activate_cc = function() {
 	// Step 3 - get all postcode elements so we can identify the forms
-	var postcode_elements = jQuery('[name$="[postcode]"]');
+	var postcode_elements = jQuery('[name="postcode"]');
 
 	postcode_elements.each(function(index) {
 		if (postcode_elements.eq(index).attr('cc-applied') !== '1') {
@@ -215,14 +232,14 @@ activate_cc = function() {
 			// check if all form elements exist correctly
 			// the way this form loads, initially region and other fields might be missing
 			if(!(
-				0 != form.find('[name$="[company]"]').length &&
-				0 != form.find('[name$="[street][0]"]').length &&
-				0 != form.find('[name$="[street][1]"]').length &&
-				0 != form.find('[name$="[postcode]"]').length &&
-				0 != form.find('[name$="[city]"]').length &&
-				0 != form.find('[name$="[region]"]').length &&
-				0 != form.find('select[name$="[region_id]"]').length &&
-				0 != form.find('select[name$="[country_id]"]').length
+				0 != form.find('[name="company"]').length &&
+				0 != form.find('[name="street[0]"]').length &&
+				0 != form.find('[name="street[1]"]').length &&
+				0 != form.find('[name="postcode"]').length &&
+				0 != form.find('[name="city"]').length &&
+				0 != form.find('[name="region"]').length &&
+				0 != form.find('select[name="region_id"]').length &&
+				0 != form.find('select[name="country_id"]').length
 			)){
 				// if anything is missing (some parts get loaded in a second ajax pass)
 				return;
@@ -232,13 +249,13 @@ activate_cc = function() {
 			cc_objects[cc_index] = new CraftyClicksMagento2Class();
 			cc_objects[cc_index].add_lookup({
 				"fields": {
-					"company_id":			form.find('[name$="[company]"]').attr('id'),
-					"address_1_id":		form.find('[name$="[street][0]"]').attr('id'),
-					"address_2_id":		form.find('[name$="[street][1]"]').attr('id'),
-					"postcode_id":		form.find('[name$="[postcode]"]').attr('id'),
-					"town_id":				form.find('[name$="[city]"]').attr('id'),
-					"county_id":			form.find('[name$="[region]"]').attr('id'),
-					"country_id":			form.find('select[name$="[country_id]"]').attr('id')
+					"company_id":			form.find('[name="company"]').attr('id'),
+					"address_1_id":		form.find('[name="street[0]"]').attr('id'),
+					"address_2_id":		form.find('[name="street[1]"]').attr('id'),
+					"postcode_id":		form.find('[name="postcode"]').attr('id'),
+					"town_id":				form.find('[name="city"]').attr('id'),
+					"county_id":			form.find('[name="region"]').attr('id'),
+					"country_id":			form.find('select[name="country_id"]').attr('id')
 				},
 				"misc": {
 					"prefix": ("cc" + cc_index),
