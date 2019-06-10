@@ -40,9 +40,9 @@ function CraftyClicksMagento2Class() {
 			if (jQuery('#cp_button_id').length == 0) {
 				jQuery('#'+this.fields.postcode_id).wrap('<div class="search-bar"></div>');
 
-				// add button after postcode input
+				// add button BEFORE postcode input (prevents m2 postcode validation from hijacking cc button)
 				var tmp_html = '<button id="cp_button_id" type="button" class="action primary"><span>' + crafty_cfg.txt.search_buttontext + '</span></button>';
-				jQuery('#'+this.fields.postcode_id).after(tmp_html);
+				jQuery('#'+this.fields.postcode_id).before(tmp_html);
 
 				// add click event listener to button
 				var el = document.getElementById('cp_button_id');
@@ -57,6 +57,11 @@ function CraftyClicksMagento2Class() {
 				'<div id="cc_' + this.misc.prefix + '_error" class="mage-error" generated><div class="search-subtext"></div></div>');
 
 				jQuery('#'+this.fields.postcode_id).closest('.field').addClass('search-container type_3')
+
+				// move m2 error field after zip (fix to prevent m2 postcode validation hijacking cc button)
+				var warningElem = jQuery('#'+this.fields.postcode_id).closest('.form-address-edit').find('div .warning')
+				jQuery('#'+this.fields.postcode_id).after(warningElem)
+
 			} else {
 				jQuery('#cp_button_id').show();
 				jQuery('#cp_result_display').show();
