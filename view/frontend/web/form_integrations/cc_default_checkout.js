@@ -26,10 +26,10 @@ function CraftyClicksMagento2Class() {
 	// initial page setup
 	this.initial_setup =function() {
 		// move country field to top
-		jQuery('#' + this.misc.container_id).find('[name="lastname"]').closest('.field').after(jQuery('#' + this.fields.country_id).closest('.field'));
+		jQuery('#' + this.fields.lastname_id).closest('.field').after(jQuery('#' + this.fields.country_id).closest('.field'));
 		// if hide fields is true, move telephone field up
 		if (crafty_cfg.hide_fields) {
-			jQuery('#' + this.fields.country_id).closest('.field').before(jQuery('#' + this.misc.container_id).find('[name="telephone"]').closest('.field'));
+			jQuery('#' + this.fields.country_id).closest('.field').before(jQuery('#' + this.fields.telephone_id).closest('.field'));
 		}
 
 		// add cp address class to fields and labels so we can easily grab them for the hide fields feature
@@ -254,11 +254,12 @@ function CraftyClicksMagento2Class() {
 
 
 activate_cc = function() {
-	if (jQuery('#checkout-step-shipping').find('[name="postcode"]').length == 1) {
+	var cc_objects = [];
+	if (jQuery('#checkout-step-shipping').find('[name="postcode"]').length == 1 && jQuery('#checkout-step-shipping').find('[name="country_id"]').length == 1) {
 		// Step 3 - now that we know this form exists, create an instance from our constructor
-		var cc1 = new CraftyClicksMagento2Class();
+		cc_objects[0] = new CraftyClicksMagento2Class();
 		// Step 4 - run the add_lookup method on our instance and pass it field id's
-		cc1.add_lookup({
+		cc_objects[0].add_lookup({
 			"fields": {
 				"company_id":			jQuery('#checkout-step-shipping').find('[name="company"]').attr('id'),
 				"address_1_id":		jQuery('#checkout-step-shipping').find('[name="street[0]"]').attr('id'),
@@ -267,32 +268,46 @@ activate_cc = function() {
 				"town_id":				jQuery('#checkout-step-shipping').find('[name="city"]').attr('id'),
 				"county_id":			jQuery('#checkout-step-shipping').find('[name="region"]').attr('id'),
 				"country_id":			jQuery('#checkout-step-shipping').find('[name="country_id"]').attr('id'),
+				"lastname_id":			jQuery('#checkout-step-shipping').find('[name="lastname"]').attr('id'),
+				"telephone_id":			jQuery('#checkout-step-shipping').find('[name="telephone"]').attr('id'),
 			},
 			"misc": {
 				"container_id":			"checkout-step-shipping",
-				"prefix":						"shipping"
+				"prefix":				"shipping"
 			}
 		});
 	}
 
-	if (jQuery('#checkout-step-payment').find('[name="postcode"]').length == 1) {
-		var cc2 = new CraftyClicksMagento2Class();
-		cc2.add_lookup({
-			"fields": {
-				"company_id":			jQuery('#checkout-step-payment').find('[name="company"]').attr('id'),
-				"address_1_id":		jQuery('#checkout-step-payment').find('[name="street[0]"]').attr('id'),
-				"address_2_id":		jQuery('#checkout-step-payment').find('[name="street[1]"]').attr('id'),
-				"address_3_id":		jQuery('#checkout-step-shipping').find('[name="street[2]"]').attr('id'),
-				"postcode_id":		jQuery('#checkout-step-payment').find('[name="postcode"]').attr('id'),
-				"town_id":				jQuery('#checkout-step-payment').find('[name="city"]').attr('id'),
-				"county_id":			jQuery('#checkout-step-payment').find('[name="region"]').attr('id'),
-				"country_id":			jQuery('#checkout-step-payment').find('[name="country_id"]').attr('id'),
-			},
-			"misc": {
-				"container_id":			"checkout-step-payment",
-				"prefix":						"payment"
-			}
-		});
+	if (jQuery('#checkout-step-payment').find('[name="postcode"]').length > 0) {
+		/**
+		 * Each available payment method has its
+		 * own address form, so we need to handle
+		 * an unknown number of forms.
+		 */
+
+		var postcode_elems = jQuery('#checkout-step-payment').find('[name="postcode"]');
+		
+		for (i = 0; i < postcode_elems.length; i++) {
+			cc_objects[i+1] = new CraftyClicksMagento2Class();
+			cc_objects[i+1].add_lookup({
+				"fields": {
+					"company_id":			jQuery('#checkout-step-payment').find('[name="company"]')[i].getAttribute('id'),
+					"address_1_id":		jQuery('#checkout-step-payment').find('[name="street[0]"]')[i].getAttribute('id'),
+					"address_2_id":		jQuery('#checkout-step-payment').find('[name="street[1]"]')[i].getAttribute('id'),
+					"address_3_id":		jQuery('#checkout-step-payment').find('[name="street[2]"]')[i].getAttribute('id'),
+					"postcode_id":		jQuery('#checkout-step-payment').find('[name="postcode"]')[i].getAttribute('id'),
+					"town_id":				jQuery('#checkout-step-payment').find('[name="city"]')[i].getAttribute('id'),
+					"county_id":			jQuery('#checkout-step-payment').find('[name="region"]')[i].getAttribute('id'),
+					"country_id":			jQuery('#checkout-step-payment').find('[name="country_id"]')[i].getAttribute('id'),
+					"lastname_id":			jQuery('#checkout-step-payment').find('[name="lastname"]')[i].getAttribute('id'),
+					"telephone_id":			jQuery('#checkout-step-payment').find('[name="telephone"]')[i].getAttribute('id'),
+				},
+				"misc": {
+					"container_id":			"checkout-step-payment",
+					"prefix":				"payment_" + (i+1)
+				}
+			});
+		}
 	}
 }
 
