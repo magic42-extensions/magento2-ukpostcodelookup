@@ -35,7 +35,7 @@ function CraftyClicksMagento2Class() {
 		// add cp address class to fields and labels so we can easily grab them for the hide fields feature
 		var that = this;
 		jQuery.each(this.fields, function(index, value) {
-			if (value !== that.fields.postcode_id && value !== that.fields.country_id) {
+			if (value !== that.fields.postcode_id && value !== that.fields.country_id && value != that.fields.lastname_id && value != that.fields.telephone_id) {
 				jQuery('#' + value).closest('.control').addClass(that.misc.prefix + '_cp_address_class');
 				jQuery('#' + value).closest('.control').prev('label').addClass(that.misc.prefix + '_cp_address_class');
 				if (value == that.fields.address_1_id) {
