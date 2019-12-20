@@ -212,7 +212,7 @@ function CraftyClicksMagento2Class() {
 
 	this.result_error = function() {
 		// apply magento error styling
-		let error = jQuery('#cp_result_display').text();
+		var error = jQuery('#cp_result_display').text();
 		jQuery('#cp_result_display').text('');
 		jQuery('#cp_result_display').siblings('.mage-error').children('.search-subtext').text(error);
 		jQuery('#cp_result_display').siblings('.mage-error').css('display', 'block');
