@@ -1,8 +1,6 @@
 /*
 // This is a collection of JavaScript code to allow easy integration of
-// the Crafty Clicks postcode / address finder functionality into 
-// OneStepCheckout by Aheadworks for Magento 2. Tested with OneStepCheckout
-// version 1.2.0.
+// the Crafty Clicks postcode / address finder functionality into Magento 2
 //
 // This file works for the standard magento 2 checkout (both community and enterprise)
 //
@@ -21,27 +19,27 @@
 // If you need any help, contact support@craftyclicks.co.uk - we will help!
 //
 **********************************************************************************/
+
 function CraftyClicksMagento2Class() {
 	this.current_setup = 'initial';
 
 	// initial page setup
 	this.initial_setup =function() {
 		// move country field to top
-		jQuery('#' + this.misc.container_class).find('[name="lastname"]').closest('.field').after(jQuery('#' + this.fields.country_id).closest('.field'));
+		jQuery('#' + this.fields.lastname_id).closest('.field').after(jQuery('#' + this.fields.country_id).closest('.field'));
 		// if hide fields is true, move telephone field up
 		if (crafty_cfg.hide_fields) {
-			jQuery('#' + this.fields.country_id).closest('.field').before(jQuery('#' + this.misc.container_class).find('[name="telephone"]').closest('.field'));
+			jQuery('#' + this.fields.country_id).closest('.field').before(jQuery('#' + this.fields.telephone_id).closest('.field'));
 		}
 
 		// add cp address class to fields and labels so we can easily grab them for the hide fields feature
 		var that = this;
 		jQuery.each(this.fields, function(index, value) {
-			if (value !== that.fields.postcode_id && value !== that.fields.country_id) {
-				jQuery('#' + value).closest('.control').addClass(that.misc.prefix + '_cp_address_class');
-				jQuery('#' + value).closest('.control').prev('label').addClass(that.misc.prefix + '_cp_address_class');
+			if (value !== that.fields.postcode_id && value !== that.fields.country_id && value != that.fields.lastname_id && value != that.fields.telephone_id) {
+				jQuery('#' + value).closest('.field').addClass(that.misc.prefix + '_cp_address_class');
+
 				if (value == that.fields.address_1_id) {
-					jQuery('#' + value).closest('.control').parent().closest('.control').addClass(that.misc.prefix + '_cp_address_class');
-					jQuery('#' + value).closest('.control').parent().closest('.control').prev('.label').addClass(that.misc.prefix + '_cp_address_class');
+					jQuery('#' + value).closest('fieldset').addClass(that.misc.prefix + '_cp_address_class');
 				}
 			}
 		})
@@ -56,22 +54,16 @@ function CraftyClicksMagento2Class() {
 			jQuery('#' + this.fields.country_id).closest('.field').after(jQuery('#' + this.fields.postcode_id).closest('.field'));
 			jQuery('#' + this.fields.postcode_id).attr('placeholder', crafty_cfg.txt.search_placeholder);
 
-			// move state to show on same row as city
-			jQuery('#' + this.fields.town_id).closest('.field').after(jQuery('#' + this.fields.county_id).closest('.field'))
-
-			// move row containing country and postcode to top
-			jQuery('#' + this.fields.address_1_id).closest('.field-row').before(jQuery('#' + this.fields.postcode_id).closest('.field-row'))
-
-			// disable autofill
-			jQuery('#' + this.fields.postcode_id).attr('autocomplete', 'new-password')
-
 			// check if button already exists
 			// Step 6 - add prefix to button and result display so they are unique
 			if (jQuery('#' + this.misc.prefix + '_cp_button_id').length == 0) {
 				jQuery('#'+this.fields.postcode_id).wrap('<div class="search-bar"></div>');
 
+				// set postcode field width (layout fix for amasty)
+				jQuery('#'+this.fields.postcode_id).attr("style", "width: 55% !important; min-width: 150px;")
+
 				// add button after postcode input
-				var tmp_html = '<button id="' + this.misc.prefix + '_cp_button_id" type="button" class="action primary" style="height: 44px"><span>' + crafty_cfg.txt.search_buttontext + '</span></button>';
+				var tmp_html = '<button id="' + this.misc.prefix + '_cp_button_id" type="button" class="action primary" style="padding-right: 1em;"><span>' + crafty_cfg.txt.search_buttontext + '</span></button>';
 				jQuery('#'+this.fields.postcode_id).after(tmp_html);
 
 				// add click event listener to button
@@ -92,6 +84,9 @@ function CraftyClicksMagento2Class() {
 				jQuery('#' + this.misc.prefix + '_cp_result_display').show();
 				jQuery('#' + this.fields.postcode_id).closest('.field').addClass("search-container type_3");
 			}
+
+			// disable autofill
+			jQuery('#' + this.fields.postcode_id).attr('autocomplete', 'new-password')
 		}
 
 		if ('initial' == this.current_setup && crafty_cfg.hide_fields) {
@@ -99,12 +94,6 @@ function CraftyClicksMagento2Class() {
 		} else if ('non_uk' == this.current_setup && crafty_cfg.hide_fields && jQuery('#' + this.fields.postcode_id).val() === "") {
 			jQuery('.' + this.misc.prefix + '_cp_address_class').hide();
 		}
-
-		// modify search input width for aheadworks
-		jQuery('.search-bar').children('.input-text').attr('style', 'width: 64% !important')
-		
-		// hide error to avoid blank vertical space
-		jQuery('#cc_' + this.misc.prefix + '_error').hide();
 
 		this.current_setup = 'uk';
 	}
@@ -114,9 +103,6 @@ function CraftyClicksMagento2Class() {
 		if ('non_uk' != this.current_setup) {
 			// move postcode field to show after region
 			jQuery('#' + this.fields.county_id).closest('.field').after(jQuery('#' + this.fields.postcode_id).closest('.field'));
-
-			// disable autofill
-			jQuery('#' + this.fields.postcode_id).attr('autocomplete', 'postal-code')
 
 			// hide button and result box if they exist
 			if (jQuery('#' + this.misc.prefix + '_cp_button_id').length == 1) {
@@ -135,11 +121,8 @@ function CraftyClicksMagento2Class() {
 			// show fields
 			jQuery('.' + this.misc.prefix + '_cp_address_class').show();
 
-			// modify search input width for aheadworks
-			jQuery('.search-bar').children('.input-text').attr('style', '')
-
-			// hide error to avoid blank vertical space
-			jQuery('#cc_' + this.misc.prefix + '_error').hide();
+			// enable autofill
+			jQuery('#' + this.fields.postcode_id).attr('autocomplete', 'postal-code')
 
 			this.current_setup = 'non_uk';
 		}
@@ -273,45 +256,100 @@ function CraftyClicksMagento2Class() {
 
 
 activate_cc = function() {
-	if (jQuery('.onestep-shipping-address').find('[name="postcode"]').length == 1 &&
-	jQuery('.onestep-shipping-address').find('[name="street[0]"]').length == 1) {
+	var cc_objects = [];
+	// amasty config: if billing address is displayed on payment method
+	if (jQuery('#checkout-step-shipping').find('[name="postcode"]').length == 1 && jQuery('#checkout-step-shipping').find('[name="country_id"]').length == 1) {
 		// Step 3 - now that we know this form exists, create an instance from our constructor
-		var cc1 = new CraftyClicksMagento2Class();
+		cc_objects[0] = new CraftyClicksMagento2Class();
 		// Step 4 - run the add_lookup method on our instance and pass it field id's
-		cc1.add_lookup({
+		cc_objects[0].add_lookup({
 			"fields": {
-				"company_id":			jQuery('.onestep-shipping-address').find('[name="company"]').attr('id'),
-				"address_1_id":		jQuery('.onestep-shipping-address').find('[name="street[0]"]').attr('id'),
-				"address_2_id":		jQuery('.onestep-shipping-address').find('[name="street[1]"]').attr('id'),
-				"postcode_id":		jQuery('.onestep-shipping-address').find('[name="postcode"]').attr('id'),
-				"town_id":				jQuery('.onestep-shipping-address').find('[name="city"]').attr('id'),
-				"county_id":			jQuery('.onestep-shipping-address').find('[name="region"]')[1].getAttribute('id'),
-				"country_id":			jQuery('.onestep-shipping-address').find('[name="country_id"]').attr('id'),
+				"company_id":			jQuery('#checkout-step-shipping').find('[name="company"]').attr('id'),
+				"address_1_id":		jQuery('#checkout-step-shipping').find('[name="street[0]"]').attr('id'),
+				"address_2_id":		jQuery('#checkout-step-shipping').find('[name="street[1]"]').attr('id'),
+				"postcode_id":		jQuery('#checkout-step-shipping').find('[name="postcode"]').attr('id'),
+				"town_id":				jQuery('#checkout-step-shipping').find('[name="city"]').attr('id'),
+				"county_id":			jQuery('#checkout-step-shipping').find('[name="region"]').attr('id'),
+				"country_id":			jQuery('#checkout-step-shipping').find('[name="country_id"]').attr('id'),
+				"lastname_id":			jQuery('#checkout-step-shipping').find('[name="lastname"]').attr('id'),
+				"telephone_id":			jQuery('#checkout-step-shipping').find('[name="telephone"]').attr('id'),
 			},
 			"misc": {
-				"container_class":			"onestep-shipping-address",
-				"prefix":						"shipping"
+				"container_id":			"checkout-step-shipping",
+				"prefix":				"shipping"
 			}
 		});
 	}
 
-	if (jQuery('.onestep-billing-address').find('[name="postcode"]').length == 1 &&
-	jQuery('.onestep-shipping-address').find('[name="street[0]"]').length == 1) {
-		var cc2 = new CraftyClicksMagento2Class();
-		cc2.add_lookup({
+	if (jQuery('#checkout-step-payment').find('[name="postcode"]').length > 0) {
+		/**
+		 * Each available payment method has its
+		 * own address form, so we need to handle
+		 * an unknown number of forms.
+		 */
+
+		var postcode_elems = jQuery('#checkout-step-payment').find('[name="postcode"]');
+		
+		for (i = 0; i < postcode_elems.length; i++) {
+			cc_objects[i+1] = new CraftyClicksMagento2Class();
+			cc_objects[i+1].add_lookup({
+				"fields": {
+					"company_id":			jQuery('#checkout-step-payment').find('[name="company"]')[i].getAttribute('id'),
+					"address_1_id":		jQuery('#checkout-step-payment').find('[name="street[0]"]')[i].getAttribute('id'),
+					"address_2_id":		jQuery('#checkout-step-payment').find('[name="street[1]"]')[i].getAttribute('id'),
+					"address_3_id":		jQuery('#checkout-step-payment').find('[name="street[2]"]')[i].getAttribute('id'),
+					"postcode_id":		jQuery('#checkout-step-payment').find('[name="postcode"]')[i].getAttribute('id'),
+					"town_id":				jQuery('#checkout-step-payment').find('[name="city"]')[i].getAttribute('id'),
+					"county_id":			jQuery('#checkout-step-payment').find('[name="region"]')[i].getAttribute('id'),
+					"country_id":			jQuery('#checkout-step-payment').find('[name="country_id"]')[i].getAttribute('id'),
+					"lastname_id":			jQuery('#checkout-step-payment').find('[name="lastname"]')[i].getAttribute('id'),
+					"telephone_id":			jQuery('#checkout-step-payment').find('[name="telephone"]')[i].getAttribute('id'),
+				},
+				"misc": {
+					"container_id":			"checkout-step-payment",
+					"prefix":				"payment_" + (i+1)
+				}
+			});
+		}
+	}
+
+	// amasty config: if billing address is displayed under shipping address
+	if (jQuery('#checkout-step-shipping').find('[name="postcode"]').length == 2 && jQuery('#checkout-step-shipping').find('[name="country_id"]').length == 2) {
+		cc_objects[0] = new CraftyClicksMagento2Class();
+		cc_objects[0].add_lookup({
 			"fields": {
-				"company_id":			jQuery('.onestep-billing-address').find('[name="company"]').attr('id'),
-				"address_1_id":		jQuery('.onestep-billing-address').find('[name="street[0]"]').attr('id'),
-				"address_2_id":		jQuery('.onestep-billing-address').find('[name="street[1]"]').attr('id'),
-				"address_3_id":		jQuery('.onestep-billing-address').find('[name="street[2]"]').attr('id'),
-				"postcode_id":		jQuery('.onestep-billing-address').find('[name="postcode"]').attr('id'),
-				"town_id":				jQuery('.onestep-billing-address').find('[name="city"]').attr('id'),
-				"county_id":			jQuery('.onestep-billing-address').find('[name="region"]')[1].getAttribute('id'),
-				"country_id":			jQuery('.onestep-billing-address').find('[name="country_id"]').attr('id'),
+				"company_id":			jQuery('#co-shipping-form').find('[name="company"]').attr('id'),
+				"address_1_id":		jQuery('#co-shipping-form').find('[name="street[0]"]').attr('id'),
+				"address_2_id":		jQuery('#co-shipping-form').find('[name="street[1]"]').attr('id'),
+				"postcode_id":		jQuery('#co-shipping-form').find('[name="postcode"]').attr('id'),
+				"town_id":				jQuery('#co-shipping-form').find('[name="city"]').attr('id'),
+				"county_id":			jQuery('#co-shipping-form').find('[name="region"]').attr('id'),
+				"country_id":			jQuery('#co-shipping-form').find('[name="country_id"]').attr('id'),
+				"lastname_id":			jQuery('#co-shipping-form').find('[name="lastname"]').attr('id'),
+				"telephone_id":			jQuery('#co-shipping-form').find('[name="telephone"]').attr('id'),
 			},
 			"misc": {
-				"container_class":			"onestep-billing-address",
-				"prefix":						"payment"
+				"container_id":			"co-shipping-form",
+				"prefix":				"shipping"
+			}
+		});
+
+		cc_objects[1] = new CraftyClicksMagento2Class();
+		cc_objects[1].add_lookup({
+			"fields": {
+				"company_id":			jQuery('.checkout-billing-address').find('[name="company"]').attr('id'),
+				"address_1_id":		jQuery('.checkout-billing-address').find('[name="street[0]"]').attr('id'),
+				"address_2_id":		jQuery('.checkout-billing-address').find('[name="street[1]"]').attr('id'),
+				"postcode_id":		jQuery('.checkout-billing-address').find('[name="postcode"]').attr('id'),
+				"town_id":				jQuery('.checkout-billing-address').find('[name="city"]').attr('id'),
+				"county_id":			jQuery('.checkout-billing-address').find('[name="region"]').attr('id'),
+				"country_id":			jQuery('.checkout-billing-address').find('[name="country_id"]').attr('id'),
+				"lastname_id":			jQuery('.checkout-billing-address').find('[name="lastname"]').attr('id'),
+				"telephone_id":			jQuery('.checkout-billing-address').find('[name="telephone"]').attr('id'),
+			},
+			"misc": {
+				// "container_id":			"co-payment-form",
+				"prefix":				"billing"
 			}
 		});
 	}
