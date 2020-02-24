@@ -24,8 +24,8 @@ function CraftyClicksMagento2Class() {
 	// initial page setup
 	this.initial_setup =function() {
 		// move fields
-		jQuery('#' + this.fields.company_id).closest('.field').before(jQuery('#' + this.fields.country_id).closest('.field'));
-		jQuery('#' + this.fields.company_id).closest('.field').before(jQuery('#' + this.fields.postcode_id).closest('.field'));
+		jQuery('#' + this.fields.address_1_id).closest('.field').before(jQuery('#' + this.fields.country_id).closest('.field'));
+		jQuery('#' + this.fields.address_1_id).closest('.field').before(jQuery('#' + this.fields.postcode_id).closest('.field'));
 	}
 
 	this.setup_for_uk = function() {
