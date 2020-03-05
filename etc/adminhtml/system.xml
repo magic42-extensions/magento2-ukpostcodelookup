@@ -17,6 +17,7 @@
 				<field id="frontend_accesstoken" type="text" sortOrder="2" showInDefault="1">
 					<label>FrontEnd Access Token</label>
 					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+					<validate>pcl-token-format</validate>
 				</field>
 				<field id="backend_enabled" translate="label" type="select" sortOrder="3" showInDefault="1">
 					<label>Enable Backend</label>
@@ -25,6 +26,7 @@
 				<field id="backend_accesstoken" type="text" sortOrder="4" showInDefault="1">
 					<label>Backend Access Token</label>
 					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+					<validate>pcl-token-format</validate>
 				</field>
 			</group>
 			<group id="gfx_options" translate="label" type="text" sortOrder="30"  showInDefault="1">
