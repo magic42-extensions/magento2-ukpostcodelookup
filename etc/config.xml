@@ -23,7 +23,7 @@
 				<error_msg_1>This postcode could not be found, please try again or enter your address manually.</error_msg_1>
 				<error_msg_2>This postcode is not valid.</error_msg_2>
 				<error_msg_3>Unable to connect to address lookup server.</error_msg_3>
-				<error_msg_4>An unexpected error occured.</error_msg_4>
+				<error_msg_4>An unexpected error occurred.</error_msg_4>
 			</txt_options>
 			<advanced>
 				<county_data>none</county_data>
