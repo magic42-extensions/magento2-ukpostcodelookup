@@ -288,19 +288,19 @@ activate_cc = function() {
 		var postcode_elems = jQuery('#checkout-step-payment').find('[name="postcode"]');
 		
 		for (i = 0; i < postcode_elems.length; i++) {
+			var form = postcode_elems[i].closest('.billing-address-form')
 			cc_objects[i+1] = new CraftyClicksMagento2Class();
 			cc_objects[i+1].add_lookup({
 				"fields": {
-					"company_id":			jQuery('#checkout-step-payment').find('[name="company"]')[i].getAttribute('id'),
-					"address_1_id":		jQuery('#checkout-step-payment').find('[name="street[0]"]')[i].getAttribute('id'),
-					"address_2_id":		jQuery('#checkout-step-payment').find('[name="street[1]"]')[i].getAttribute('id'),
-					"address_3_id":		jQuery('#checkout-step-payment').find('[name="street[2]"]')[i].getAttribute('id'),
-					"postcode_id":		jQuery('#checkout-step-payment').find('[name="postcode"]')[i].getAttribute('id'),
-					"town_id":				jQuery('#checkout-step-payment').find('[name="city"]')[i].getAttribute('id'),
-					"county_id":			jQuery('#checkout-step-payment').find('[name="region"]')[i].getAttribute('id'),
-					"country_id":			jQuery('#checkout-step-payment').find('[name="country_id"]')[i].getAttribute('id'),
-					"lastname_id":			jQuery('#checkout-step-payment').find('[name="lastname"]')[i].getAttribute('id'),
-					"telephone_id":			jQuery('#checkout-step-payment').find('[name="telephone"]')[i].getAttribute('id'),
+					"company_id":			jQuery(form).find('[name="company"]').attr('id'),
+					"address_1_id":		jQuery(form).find('[name="street[0]"]').attr('id'),
+					"address_2_id":		jQuery(form).find('[name="street[1]"]').attr('id'),
+					"postcode_id":		jQuery(form).find('[name="postcode"]').attr('id'),
+					"town_id":				jQuery(form).find('[name="city"]').attr('id'),
+					"county_id":			jQuery(form).find('[name="region"]').attr('id'),
+					"country_id":			jQuery(form).find('[name="country_id"]').attr('id'),
+					"lastname_id":			jQuery(form).find('[name="lastname"]').attr('id'),
+					"telephone_id":			jQuery(form).find('[name="telephone"]').attr('id'),
 				},
 				"misc": {
 					"container_id":			"checkout-step-payment",
