@@ -18,6 +18,7 @@
 //
 // If you need any help, contact support@craftyclicks.co.uk - we will help!
 //
+// Plugin version: magento2-uk 1.1.5
 **********************************************************************************/
 
 function CraftyClicksMagento2Class() {
