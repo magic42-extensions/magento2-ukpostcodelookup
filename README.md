@@ -1,4 +1,5 @@
 # Crafty Clicks Magento 2 Integration
+> Added support for PHP 7.4
 ## Quick instructions
 
 ### Install via composer
